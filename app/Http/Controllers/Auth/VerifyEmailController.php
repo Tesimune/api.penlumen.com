@@ -7,10 +7,14 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\RedirectResponse;
 
+/**
+ * @group Auth Endpoints.
+ * 
+ */
 class VerifyEmailController extends Controller
 {
     /**
-     * Mark the authenticated user's email address as verified.
+     * Verify email.
      */
     public function __invoke(EmailVerificationRequest $request): RedirectResponse
     {

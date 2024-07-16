@@ -8,10 +8,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * @group Auth Endpoints.
+ * 
+ */
 class PasswordResetLinkController extends Controller
 {
     /**
-     * Handle an incoming password reset link request.
+     * Password reset.
      *
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -34,6 +38,14 @@ class PasswordResetLinkController extends Controller
             ]);
         }
 
-        return response()->json(['status' => __($status)]);
+        return response()->json([
+            "status" => 200,
+            "success" => true,
+            "message" => "success",
+            "data" => [
+                "message" => "success",
+                'email' => [__($status)],
+            ]
+        ]);
     }
 }

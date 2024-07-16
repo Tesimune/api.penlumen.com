@@ -12,10 +12,14 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * @group Auth Endpoints.
+ * 
+ */
 class NewPasswordController extends Controller
 {
     /**
-     * Handle an incoming new password request.
+     * Update password.
      *
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -43,11 +47,25 @@ class NewPasswordController extends Controller
         );
 
         if ($status != Password::PASSWORD_RESET) {
-            throw ValidationException::withMessages([
-                'email' => [__($status)],
+            return response()->json([
+                "status" => 200,
+                "success" => true,
+                "message" => "success",
+                "data" => [
+                    "message" => "success",
+                    'email' => [__($status)],
+                ]
             ]);
         }
 
-        return response()->json(['status' => __($status)]);
+        return response()->json([
+            "status" => 200,
+            "success" => true,
+            "message" => "success",
+            "data" => [
+                "message" => "success",
+                'email' => [__($status)],
+            ]
+        ]);
     }
 }

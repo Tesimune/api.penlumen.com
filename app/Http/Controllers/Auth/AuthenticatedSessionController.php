@@ -4,35 +4,76 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
+
+/**
+ * @group Auth Endpoints
+ *
+ */
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Handle an incoming authentication request.
+     * Login.
      */
-    public function store(LoginRequest $request): Response
+    public function store(LoginRequest $request)
     {
-        $request->authenticate();
+        $validated = $request->validate([
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
+            'password' => ['required'],
+        ]);
 
-        $request->session()->regenerate();
+        $login = [
+            'email' => $validated['email'],
+            'password' => $validated['password']
+        ];
 
-        return response()->noContent();
+        if (!Auth::attempt($login)) {
+            return response()->json([
+                'status' => 401,
+                'success' => false,
+                'message' =>  'Bad Credentials'
+            ], 401);
+        }
+
+        $user = User::where('email', $request['email'])->first();
+
+        if ($user) {
+            $token = $user->createToken('token')->plainTextToken;
+            $user->save();
+        } else {
+            return response()->json([
+                'status' => 401,
+                'success' => false,
+                'message' =>  'Account is currently disabled'
+            ], 401);
+        }
+
+        $request = [
+            'status' => 200,
+            'success' => true,
+            'message' => 'Login successful',
+            'token' => $token
+        ];
+
+        return response()->json($request);
     }
 
     /**
-     * Destroy an authenticated session.
+     * Logout.
      */
-    public function destroy(Request $request): Response
+    public function destroy(Request $request)
     {
-        Auth::guard('web')->logout();
+        $user = Auth::user();
+        $user->token()->delete();
 
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return response()->noContent();
+        return response()->json([
+            'status' => 200,
+            'success' => true,
+            'message' => 'Logout successful'
+        ]);
     }
 }
