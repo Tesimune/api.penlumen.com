@@ -1,0 +1,9 @@
+.idea
+.vscode
+.gitattributes
+.gitignore
+.github
+README.md
+phpunit.xml
+Dockerfile
+vendor

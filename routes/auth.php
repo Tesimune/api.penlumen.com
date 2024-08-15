@@ -8,12 +8,23 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Auth\ProfileController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
 Route::middleware(['api', 'web'])->prefix('auth')->group(function () {
     Route::get('google/redirect', [SocialiteController::class, 'google_redirect']);
     Route::get('google/callback', [SocialiteController::class, 'google_callback']);
+});
+
+Route::middleware(["auth:sanctum"])->prefix("v1")->group(function (){
+   Route::get("/user", function (Request $request) {
+       return $request->user();
+   });
+});
+
+Route::middleware(["guest"])->prefix("auth")->group(function () {
+
 });
 
 
