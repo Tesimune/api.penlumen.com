@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Enums;
+
 enum BookStatus: int
 {
     case DRAFT = 3;

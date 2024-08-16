@@ -23,7 +23,7 @@ return new class extends Migration
             $table->longText("content")->nullable();
             $table->string("description")->nullable();
             $table->string("cover")->nullable();
-            $table->string("status")->nullable()->default(BookStatus::DRAFT);
+            $table->string("status")->nullable()->default(\App\Enums\BookStatus::DRAFT);
             $table->timestamps();
         });
     }
