@@ -23,11 +23,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         ]);
-
-        //
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        
+
         $exceptions->render(function (AuthenticationException $e, Request $request) {
             if ($request->expectsJson()) {
                 $response = [

@@ -28,6 +28,6 @@ class Socialite extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_uuid', 'uuid');
+        return $this->belongsTo(User::class);
     }
 }

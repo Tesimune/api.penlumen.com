@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -21,6 +23,8 @@ class User extends Authenticatable //implements MustVerifyEmail
     protected $fillable = [
         'uuid',
         'email',
+        "first_name",
+        "last_name",
         'username',
         'user_type',
         'status',
@@ -46,24 +50,24 @@ class User extends Authenticatable //implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    
+
     public function socialite(): HasMany
     {
-        return $this->has(Socialite::class, "user_uuid", "uuid");
+        return $this->has(Socialite::class);
     }
 
-    public function profile(): HasMany
+    public function profile(): HasOne
     {
-        return $this->has(Profile::class, "user_uuid", "uuid");
+        return $this->hasOne(Profile::class);
     }
 
-    public function draft(): HasMany
+    public function drafts(): HasMany
     {
-        return $this->hasMany(Draft::class, "user_uuid", "uuid");
+        return $this->hasMany(Draft::class);
     }
 
     public function branch(): HasMany
     {
-        return $this->hasMany(Branch::class, "draft_uuid", "uuid");
+        return $this->hasMany(Branch::class);
     }
 }

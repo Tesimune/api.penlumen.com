@@ -11,12 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('profiles', function (Blueprint $table) {
+        Schema::create('books', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->string('uuid')->unique();
+            $table->string('isbn')->nullable();
             $table->foreignId('user_id')
                 ->references("id")
                 ->on("users")
                 ->onDelete("cascade");
+            $table->longText("content")->nullable();
+            $table->string("description")->nullable();
+            $table->string("cover")->nullable();
+            $table->string("status")->nullable()->default(BookStatus::DRAFT);
             $table->timestamps();
         });
     }
@@ -26,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('books');
     }
 };

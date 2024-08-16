@@ -24,11 +24,11 @@ class Branch extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, "user_uuid", "uuid");
+        return $this->belongsTo(User::class);
     }
 
     public function draft(): BelongsTo
     {
-        return $this->belongsTo(Draft::class, "draft_uuid", "uuid");
+        return $this->belongsTo(Draft::class);
     }
 }

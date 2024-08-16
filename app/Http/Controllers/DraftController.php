@@ -21,91 +21,25 @@ class DraftController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($lumen)
+    public function index(Request $request)
     {
-        $user = Auth::user();
-        if ($lumen !== $user->username) {
-            return response()->json([
-                "status" => 419,
-                "success" => false,
-                "message" => "Unauthorized",
-                "data" => [
-                    "message" => "Unauthorized",
-                ]
-            ]);
-        }
-
-        $drafts = Draft::where("user_uuid", $user->uuid)->latest()->paginate(20);
-        return response()->json([
-            "status" => 200,
-            "success" => true,
-            "message" => "success",
-            "data" => [
-                "message" => "success",
-                "drafts" => $drafts
-            ]
-        ]);
+        return $request->user()->drafts()->paginate(20);
     }
 
-   
+
     /**
      * Create draft.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function store(Request $request, $lumen)
+    public function store(Request $request)
     {
-        $user = Auth::user();
-        if ($lumen !== $user->username) {
-            return response()->json([
-                "status" => 419,
-                "success" => false,
-                "message" => "Unauthorized",
-                "data" => [
-                    "message" => "Unauthorized",
-                ]
-            ]);
-        }
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:50'],
             'content' => ['string'],
         ]);
 
-        $user = Auth::user();
-        $title = $validated['title'];
-        $counter = 1;
-        $originalTitle = $title;
-
-        while ($user->draft->where('title', $title)->exists()) {
-            $title = $originalTitle . ' (' . $counter++ . ')';
-        }
-
-        $slug = strtolower(str_replace(' ', '_', $validated['title']));
-        $baseSlug = $slug;
-        $counter = 1;
-        while (Draft::where('slug', $slug)->where('user_uuid', $user->uuid)->exists()) {
-            $slug = $baseSlug . '_' . $counter;
-            $counter++;
-        }
-
-        $draft = Draft::create([
-            'uuid' => Str::uuid(),
-            'slug' => $slug,
-            'user_uuid' => $user->uuid,
-            'title' => $title,
-            'content' => $validated['content'],
-        ]);
-
-        return response()->json([
-            "status" => 200,
-            "success" => true,
-            "message" => "success",
-            "data" => [
-                "message" => "success",
-                "draft" => $draft
-            ]
-        ]);
     }
 
 
@@ -113,39 +47,11 @@ class DraftController extends Controller
      * Show draft.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Draft
      */
-    public function show($lumen, Draft $draft)
+    public function show(Draft $draft)
     {
-        $user = Auth::user();
-        if ($lumen !== $user->username) {
-            return response()->json([
-                "status" => 419,
-                "success" => false,
-                "message" => "Unauthorized",
-                "data" => [
-                    "message" => "Unauthorized",
-                ]
-            ]);
-        }elseif($draft->user_uuid !== $user->uuid){
-            return response()->json([
-                "status" => 419,
-                "success" => false,
-                "message" => "Unauthorized",
-                "data" => [
-                    "message" => "Unauthorized",
-                ]
-            ]);
-        }
-        return response()->json([
-            "status" => 200,
-            "success" => true,
-            "message" => "success",
-            "data" => [
-                "message" => "success",
-                "draft" => $draft->load('branch')
-            ]
-        ]);
+       return $draft;
     }
 
     /**
@@ -158,63 +64,11 @@ class DraftController extends Controller
 
     public function update(Request $request, $lumen, Draft $draft)
     {
-        $user = Auth::user();
-        if ($lumen !== $user->username) {
-            return response()->json([
-                "status" => 419,
-                "success" => false,
-                "message" => "Unauthorized",
-                "data" => [
-                    "message" => "Unauthorized",
-                ]
-            ], 419);
-        } elseif (!$draft) {
-            return response()->json([
-                "status" => 404,
-                "success" => false,
-                "message" => "Unauthorized",
-                "data" => [
-                    "message" => "Unauthorized",
-                ]
-            ], 404);
-        } elseif ($draft->user_uuid !== $user->uuid) {
-            return response()->json([
-                "status" => 419,
-                "success" => false,
-                "message" => "Unauthorized",
-                "data" => [
-                    "message" => "Unauthorized",
-                ]
-            ], 419);
-        }
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:50'],
             'content' => ['string'],
         ]);
-        $user = auth()->user();
 
-        $slug = strtolower(str_replace(' ', '_', $validated['title']));
-        $baseSlug = $slug;
-        $counter = 1;
-        while (Draft::where('slug', $slug)->where('user_uuid', $user->uuid)->exists()) {
-            $slug = $baseSlug . '_' . $counter;
-            $counter++;
-        }
-
-        $draft->title = $validated['title'];
-        $draft->content = $validated['content'];
-        $draft->slug = $slug;
-        $draft->save();
-
-        return response()->json([
-            "status" => 200,
-            "success" => true,
-            "message" => "success",
-            "data" => [
-                "message" => "success",
-                "drafts" => $draft->branch
-            ]
-        ]);
     }
 
     /**
@@ -225,40 +79,6 @@ class DraftController extends Controller
      */
     public function destroy($lumen, Draft $draft)
     {
-        $user = Auth::user();
-        if ($lumen !== $user->username) {
-            return response()->json([
-                "status" => 419,
-                "success" => false,
-                "message" => "Unauthorized",
-                "data" => [
-                    "message" => "Unauthorized",
-                ]
-            ]);
-        } elseif ($draft->user_uuid !== $user->uuid) {
-            return response()->json([
-                "status" => 419,
-                "success" => false,
-                "message" => "Unauthorized",
-                "data" => [
-                    "message" => "Unauthorized",
-                ]
-            ]);
-        }
-        $branches = Branch::where('uuid', $draft->uuid)->get();
-        foreach ($branches as $branch) {
-            $branch->delete();
-        }
 
-        $draft->delete();
-        
-        return response()->json([
-            "status" => 200,
-            "success" => true,
-            "message" => "success",
-            "data" => [
-                "message" => "success",
-            ]
-        ]);
     }
 }

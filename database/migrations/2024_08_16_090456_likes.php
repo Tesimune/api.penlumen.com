@@ -11,16 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('socialites', function (Blueprint $table) {
+        Schema::create('likes', function (Blueprint $table) {
             $table->id();
-            $table->string("socialite");
-            $table->string("email");
-            $table->string("token");
-            $table->text("auth_data");
-            $table->foreignId("user_id")
-                ->references("id")
-                ->on("users")
-                ->cascadeOnDelete();
+            $table->integer('liker_type')->nullable();
+            $table->integer('liker_id')->nullable();
+            $table->string('likable_type');
+            $table->string('likable_id');
             $table->timestamps();
         });
     }
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('socialites');
+        Schema::dropIfExists('likes');
     }
 };

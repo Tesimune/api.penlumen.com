@@ -12,12 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('branches', function (Blueprint $table) {
-            $table->string('uuid')->unique();
-            $table->string('slug')->unique();
-            $table->string('user_uuid');
-            $table->string('draft_uuid');
+            $table->id();
             $table->string('title');
+            $table->string('slug')->unique();
             $table->longText('content')->nullable();
+            $table->foreignId('user_id')
+                ->references('id')
+                ->on('users')
+                ->cascadeOnDelete();
+            $table->foreignId('book_id')
+                ->references('id')
+                ->on('books')
+                ->cascadeOnDelete();
+            $table->timestamps();
         });
     }
 
