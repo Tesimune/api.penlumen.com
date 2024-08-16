@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -8,7 +9,11 @@ Route::get('/', function () {
 
 Route::prefix("/v1")->group(function () {
     require __DIR__ . '/auth.php';
-    require __DIR__ . '/api/draft.php';
-    require __DIR__ . '/api/drive.php';
-    require __DIR__ . '/api/branch.php';
+//    require __DIR__ . '/api/drive.php';
+//    require __DIR__ . '/api/branch.php';
+
+
+    Route::middleware(['api', "auth:sanctum"])->group(function () {
+        Route::apiResource('books', BookController::class);
+    });
 });

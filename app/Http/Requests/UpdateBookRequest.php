@@ -8,14 +8,14 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreBookRequest extends FormRequest
+class UpdateBookRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->user()->can('create', Book::class);
+        return auth()->user()->can('update', $this->book);
     }
 
     /**
@@ -26,7 +26,7 @@ class StoreBookRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "title" => ["required", "string", "max:150"],
+            "title" => ["nullable", "string", "max:150"],
             "status" => ["nullable", Rule::enum(BookStatus::class)],
             "content" => ["required_if:status,".BookStatus::PUBLISHED->value, "string", "max:5000"],
             "description" => ["nullable", "string", "max:255"],

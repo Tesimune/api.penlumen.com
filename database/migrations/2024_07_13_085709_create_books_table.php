@@ -16,14 +16,12 @@ return new class extends Migration
             $table->string('title');
             $table->string('uuid')->unique();
             $table->string('isbn')->nullable();
-            $table->foreignId('user_id')
-                ->references("id")
-                ->on("users")
-                ->onDelete("cascade");
+            $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete();
             $table->longText("content")->nullable();
             $table->string("description")->nullable();
             $table->string("cover")->nullable();
             $table->string("status")->nullable()->default(\App\Enums\BookStatus::DRAFT);
+            $table->timestamp("deleted_at")->nullable();
             $table->timestamps();
         });
     }
