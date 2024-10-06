@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Models\Bookmark;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
-class BookmarkController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -26,7 +26,7 @@ class BookmarkController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Bookmark $bookmark)
+    public function show(Category $category)
     {
         //
     }
@@ -34,7 +34,7 @@ class BookmarkController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Bookmark $bookmark)
+    public function update(Request $request, Category $category)
     {
         //
     }
@@ -42,7 +42,7 @@ class BookmarkController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Bookmark $bookmark)
+    public function destroy(Category $category)
     {
         //
     }

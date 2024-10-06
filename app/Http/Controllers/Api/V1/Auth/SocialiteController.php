@@ -1,25 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Api\V1\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\V1\Controller;
 use App\Models\Profile;
-use Illuminate\Http\Request;
-use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 
 /**
  * @group Auth Endpoints.
- * 
+ *
  */
 class SocialiteController extends Controller
 {
     /**
      * Google auth.
-     * 
+     *
      */
     public function google_redirect()
     {
@@ -62,7 +60,7 @@ class SocialiteController extends Controller
 
     /**
      * Google callback.
-     * 
+     *
      */
     public function google_callback()
     {

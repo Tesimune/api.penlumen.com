@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\V1\BranchController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BranchController;
 
 Route::middleware(['auth:sanctum', 'verified'])->prefix("{lumen:username}/{draft:slug}/branch")->name("draft.branch.")->group(function () {
     Route::get('/', [BranchController::class, "index"])->name('index');

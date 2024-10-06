@@ -1,23 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Models\User;
-use Illuminate\Http\Request;
 use Google_Client;
 use Google_Service_Drive;
 use Google_Service_Drive_DriveFile;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 /**
  * @group Drive Endpoint.
- * 
+ *
  */
 class DriveController extends Controller
 {
     /**
      * List documents.
-     * 
+     *
      */
     public function index($lumen)
     {
@@ -68,7 +67,7 @@ class DriveController extends Controller
 
     /**
      * Show document.
-     * 
+     *
      */
     public function show($id, $lumen)
     {
@@ -117,7 +116,7 @@ class DriveController extends Controller
 
     /**
      * Create document.
-     * 
+     *
      */
     public function create(Request $request, $lumen)
     {
@@ -172,7 +171,7 @@ class DriveController extends Controller
 
     /**
      * Update document.
-     * 
+     *
      */
     public function update(Request $request, $id, $lumen)
     {
@@ -227,7 +226,7 @@ class DriveController extends Controller
 
     /**
      * Delete document.
-     * 
+     *
      */
     public function delete($id, $lumen)
     {

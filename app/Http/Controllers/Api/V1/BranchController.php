@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use Illuminate\Http\Request;
-use App\Models\Draft;
 use App\Models\Branch;
-use App\Models\User;
+use App\Models\Draft;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 

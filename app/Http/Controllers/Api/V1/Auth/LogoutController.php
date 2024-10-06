@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Api\V1\Auth;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Api\V1\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class LogoutController extends Controller
 {

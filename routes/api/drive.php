@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\DriveController;
+use App\Http\Controllers\Api\V1\DriveController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->prefix("{lumen:username}/google/drive")->name("google.drive.")->group(function () {

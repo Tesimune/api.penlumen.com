@@ -9,13 +9,7 @@ class Profile extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'uuid',
-        'user_uuid',
-        'first_name',
-        'last_name',
-        'profile',
-        'role',
-        'biography',
+        'user_id',
     ];
 
     protected $hidden = [
