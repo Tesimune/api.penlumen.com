@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class User extends Authenticatable //implements MustVerifyEmail
 {
@@ -47,6 +48,11 @@ class User extends Authenticatable //implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
     
+    public function token()
+    {
+        return $this->hasMany(PersonalAccessToken::class, 'tokenable_id');
+    }
+
     public function socialite(): HasMany
     {
         return $this->has(Socialite::class, "user_uuid", "uuid");
